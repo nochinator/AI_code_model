@@ -1,0 +1,41 @@
+# Recommended dataset mix for a stronger 175M run.
+# Use only datasets/licenses you are allowed to train on.
+
+train_sources:
+  - type: huggingface
+    dataset: codeparrot/github-code-clean
+    split: train
+    text_field: code
+    max_samples: 600000
+
+  - type: huggingface
+    dataset: code_search_net
+    split: train
+    text_field: whole_func_string
+    max_samples: 300000
+
+  - type: jsonl
+    path: data/real/instruction_dialogues.jsonl
+    text_key: text
+    max_rows: 300000
+
+  - type: jsonl
+    path: data/real/technical_explanations.jsonl
+    text_key: text
+    max_rows: 300000
+
+val_sources:
+  - type: huggingface
+    dataset: code_search_net
+    split: validation
+    text_field: whole_func_string
+    max_samples: 20000
+
+  - type: jsonl
+    path: data/real/validation_mix.jsonl
+    text_key: text
+    max_rows: 20000
+
+# Keep some synthetic data as regularization and format supervision.
+train_synthetic_examples: 25000
+val_synthetic_examples: 2000

@@ -1,0 +1,44 @@
+seed: 42
+output_dir: outputs/base_run
+device: auto
+
+data:
+  sequence_length: 1024
+  train_synthetic_examples: 120000
+  val_synthetic_examples: 5000
+  # Add real corpora entries under train_sources/val_sources for better quality.
+  train_sources: []
+  val_sources: []
+
+tokenizer:
+  type: sentencepiece
+  vocab_size: 32000
+  model_type: bpe
+  model_prefix: outputs/base_run/tokenizer
+  meta_path: outputs/base_run/tokenizer.json
+  retrain: true
+
+model:
+  # ~60M baseline model for easier local experiments.
+  d_model: 512
+  n_heads: 8
+  n_layers: 12
+  d_ff: 2048
+  dropout: 0.0
+  param_budget_millions: 70
+
+training:
+  batch_size: 16
+  micro_batch_size: 2
+  lr: 3.0e-4
+  min_lr_scale: 0.1
+  weight_decay: 0.1
+  warmup_steps: 1000
+  max_steps: 80000
+  eval_every: 2000
+  eval_batches: 100
+  save_every: 5000
+  log_every: 50
+  grad_clip: 1.0
+  mixed_precision: true
+  compile_model: false
